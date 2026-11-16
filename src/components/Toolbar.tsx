@@ -17,9 +17,11 @@ interface Props {
   onReload: () => void
   zoom: Zoom
   onZoom: (z: Zoom) => void
+  syncScroll: boolean
+  onSyncScroll: (v: boolean) => void
 }
 
-export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom }: Props) {
+export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom, syncScroll, onSyncScroll }: Props) {
   const [draft, setDraft] = useState(url)
 
   return (
@@ -52,6 +54,10 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom }: Pr
             <option key={String(o.value)} value={String(o.value)}>{o.label}</option>
           ))}
         </select>
+      </label>
+      <label className="zoom" title="Requiere pegar public/sync.js en tu proyecto">
+        <input type="checkbox" checked={syncScroll} onChange={(e) => onSyncScroll(e.target.checked)} />
+        Sincronizar scroll
       </label>
       <HelpPanel />
     </header>

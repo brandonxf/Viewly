@@ -9,11 +9,13 @@ interface Props {
   rotated: boolean
   reloadKey: number
   onRotate?: () => void
+  /** Registra el iframe para poder identificarlo en mensajes (sincronización). */
+  registerFrame?: (id: string, el: HTMLIFrameElement | null) => void
   /** Si se pasa, muestra un slider de ancho (280–1920). */
   slider?: { value: number; onChange: (w: number) => void }
 }
 
-export default function DeviceFrame({ device, url, scale, rotated, reloadKey, onRotate, slider }: Props) {
+export default function DeviceFrame({ device, url, scale, rotated, reloadKey, onRotate, slider, registerFrame }: Props) {
   const boxRef = useRef<HTMLDivElement>(null)
   const [hint, setHint] = useState(false)
   const w = rotated ? device.height : device.width
@@ -51,6 +53,7 @@ export default function DeviceFrame({ device, url, scale, rotated, reloadKey, on
       <div ref={boxRef} className="frame-box" style={{ width: w * scale, height: h * scale }}>
         <iframe
           key={`${url}|${reloadKey}`}
+          ref={(el) => registerFrame?.(device.id, el)}
           src={url}
           title={device.name}
           style={{ width: w, height: h, transform: `scale(${scale})`, transformOrigin: 'top left' }}

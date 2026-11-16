@@ -23,6 +23,12 @@ export default function App() {
   const [custom, setCustom] = useLocalStorage<Device[]>('rl:custom', [])
   const [freeOn, setFreeOn] = useLocalStorage<boolean>('rl:free', false)
   const [freeW, setFreeW] = useLocalStorage<number>('rl:freeW', 600)
+  const [syncScroll, setSyncScroll] = useLocalStorage<boolean>('rl:sync', false)
+  const frames = useRef(new Map<string, HTMLIFrameElement>())
+  const registerFrame = (id: string, el: HTMLIFrameElement | null) => {
+    if (el) frames.current.set(id, el)
+    else frames.current.delete(id)
+  }
   const [rotated, setRotated] = useState<string[]>([])
   const [reloadKey, setReloadKey] = useState(0)
 
@@ -74,6 +80,22 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [setZoom])
 
+  useEffect(() => {
+    if (!syncScroll) return
+    const onMessage = (e: MessageEvent) => {
+      const m = e.data
+      if (!m || m.type !== 'viewly:scroll') return
+      for (const el of frames.current.values()) {
+        // Solo reenviar a los demás frames; el emisor se identifica con event.source.
+        if (el.contentWindow && el.contentWindow !== e.source) {
+          el.contentWindow.postMessage({ type: 'viewly:apply-scroll', x: m.x, y: m.y }, '*')
+        }
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [syncScroll])
+
   return (
     <div className="app">
       <Toolbar
@@ -83,6 +105,8 @@ export default function App() {
         onReload={() => setReloadKey((k) => k + 1)}
         zoom={zoom}
         onZoom={setZoom}
+        syncScroll={syncScroll}
+        onSyncScroll={setSyncScroll}
       />
       <div className="body">
         <DevicePanel custom={custom} enabled={enabled} onToggle={toggle} onAdd={addDevice} onRemove={removeDevice} freeOn={freeOn} onFreeToggle={() => setFreeOn((v) => !v)} />
@@ -99,6 +123,7 @@ export default function App() {
                   rotated={rotated.includes(d.id)}
                   reloadKey={reloadKey}
                   onRotate={() => rotate(d.id)}
+                  registerFrame={registerFrame}
                 />
               ))}
               {freeOn && (
@@ -109,6 +134,7 @@ export default function App() {
                   rotated={false}
                   reloadKey={reloadKey}
                   slider={{ value: freeW, onChange: setFreeW }}
+                  registerFrame={registerFrame}
                 />
               )}
             </div>
