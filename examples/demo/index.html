@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Demo responsive</title>
 <style>
-  body { margin: 0; font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh;
+  body { margin: 0; font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 300vh; align-content: start; padding-top: 20vh;
          background: #ffe3e3; color: #222; text-align: center; }
   h1 { font-size: 3rem; margin: 0; }
   .layout::after { content: "Móvil (< 600px)"; font-size: 1.5rem; }
@@ -23,5 +23,6 @@
     const u = () => (w.textContent = innerWidth);
     u(); addEventListener('resize', u);
   </script>
+  <script src="http://localhost:5173/sync.js"></script>
 </body>
 </html>
