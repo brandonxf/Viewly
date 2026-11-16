@@ -31,7 +31,8 @@ Abre el visor en `http://localhost:5173` (o el puerto que indique Vite). Para co
 ### Sincronizar scroll y rutas (Fase 3, opcional)
 
 1. Pega en tu proyecto: `<script src="http://localhost:5173/sync.js"></script>` (ajusta el puerto al del visor).
-2. Activa **Sync** en la barra. El scroll de un frame se reproduce, como proporción, en los demás.
+2. Con el script, la barra de scroll de los frames queda oculta (un iframe de otro origen no se puede estilizar desde el visor; ensanchar el iframe para recortarla falsearía el ancho que ven las media queries). Sin el script se ve la barra normal.
+3. Activa **Sync** en la barra. El scroll de un frame se reproduce, como proporción, en los demás.
 
 Sin el script, el interruptor simplemente no hace nada. El interruptor también sincroniza la **navegación**: si cambias de página en un frame (enlaces, `pushState`, hash), los demás van a la misma ruta (solo rutas del mismo origen). Los clics no se sincronizan.
 

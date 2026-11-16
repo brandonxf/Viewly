@@ -6,6 +6,11 @@
 (function () {
   if (window.parent === window) return // no está dentro del visor
   var applying = false
+
+  // Oculta la barra de scroll sin cambiar el ancho del viewport (las media queries siguen midiendo el ancho real).
+  var st = document.createElement('style')
+  st.textContent = 'html{scrollbar-width:none}html::-webkit-scrollbar{display:none}'
+  ;(document.head || document.documentElement).appendChild(st)
   var timer = null
 
   function ratio(pos, size, view) {
