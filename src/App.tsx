@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Toolbar, { type Zoom } from './components/Toolbar'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { normalizeUrl } from './lib/url'
+import { useFitScale } from './hooks/useFitScale'
 import DevicePanel from './components/DevicePanel'
 import DeviceFrame from './components/DeviceFrame'
 import { DEVICES } from './devices'
@@ -34,7 +35,12 @@ export default function App() {
   const rotate = (id: string) =>
     setRotated((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]))
   const active = DEVICES.filter((d) => enabled.includes(d.id))
-  const scale = zoom === 'fit' ? 1 : zoom
+  const stageRef = useRef<HTMLElement>(null)
+  const fit = useFitScale(
+    stageRef,
+    active.map((d) => (rotated.includes(d.id) ? { w: d.height, h: d.width } : { w: d.width, h: d.height })),
+  )
+  const scale = zoom === 'fit' ? fit : zoom
 
   return (
     <div className="app">
@@ -48,7 +54,7 @@ export default function App() {
       />
       <div className="body">
         <DevicePanel enabled={enabled} onToggle={toggle} />
-        <main className="stage">
+        <main className="stage" ref={stageRef}>
           {!url && <p className="empty">Escribe la URL de tu proyecto para empezar.</p>}
           {url && (
             <div className="frames">
