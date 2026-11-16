@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import QrDialog from './QrDialog'
 import HelpPanel from './HelpPanel'
 
 export type Zoom = 'fit' | number
@@ -23,6 +24,7 @@ interface Props {
 
 export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom, syncScroll, onSyncScroll }: Props) {
   const [draft, setDraft] = useState(url)
+  const [qr, setQr] = useState(false)
 
   return (
     <header className="toolbar">
@@ -59,6 +61,8 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom, sync
         <input type="checkbox" checked={syncScroll} onChange={(e) => onSyncScroll(e.target.checked)} />
         Sincronizar scroll
       </label>
+      <button type="button" onClick={() => setQr(true)} disabled={!url}>QR</button>
+      {qr && <QrDialog url={url} onClose={() => setQr(false)} />}
       <HelpPanel />
     </header>
   )
