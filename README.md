@@ -47,3 +47,23 @@ Para probar: `npx serve examples/demo` y pega la URL que muestre.
 - Los sitios que prohíben ser embebidos (`X-Frame-Options`, CSP `frame-ancestors`) no se verán.
 - Chrome y Firefox suelen permitir que una página HTTPS muestre `http://localhost`; Safari puede bloquearlo. Mientras desarrollas, correr el visor en `http://localhost` evita el problema.
 - No se puede detectar de forma fiable si un iframe fue bloqueado; por eso existe el botón **¿No carga?**.
+
+## Funciones de la Fase 4
+
+- **Puertos detectados:** sin URL, Viewly sondea `localhost` en 5173, 3000, 4200 y 8080 y ofrece los que responden como botones.
+- **QR:** el botón **QR** genera un código para abrir el proyecto en un teléfono real de la misma red. `localhost` no sirve en el teléfono: edita el host por la IP de tu PC y arranca tu servidor con acceso de red (`--host` en Vite).
+
+## Despliegue
+
+Es una web estática (`npm run build` genera `dist/`).
+
+- **Vercel:** importa el repositorio; Vercel detecta Vite y no necesita configuración (comando `npm run build`, salida `dist`).
+- **GitHub Pages:** si se sirve desde `https://usuario.github.io/Viewly/`, la opción `base` de Vite debe ser el nombre del repo:
+
+  ```bash
+  BASE_PATH=/Viewly/ npm run build
+  ```
+
+  Publica el contenido de `dist/` (por ejemplo con una GitHub Action o la rama `gh-pages`). Con dominio propio o Vercel no hace falta `BASE_PATH`.
+
+Nota: una página en HTTPS que muestre `http://localhost` funciona en Chrome y Firefox, pero Safari puede bloquearlo.
