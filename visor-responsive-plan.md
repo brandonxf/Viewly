@@ -1,6 +1,6 @@
 # Visor responsive en vivo: plan para Claude Code
 
-Nombre de trabajo: **ResponsiveLive** (se puede cambiar).
+Nombre de trabajo: **Viewly** (se puede cambiar).
 
 ## Qué es
 

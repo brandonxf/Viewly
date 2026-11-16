@@ -1,4 +1,4 @@
-# ResponsiveLive
+# Viewly
 
 Página web estática donde pegas la URL de tu proyecto (normalmente `http://localhost:5173`) y lo ves a la vez en varios dispositivos (teléfono, tablet y PC), sin abrir F12 ni el modo responsive del navegador. Al guardar en tu editor, el hot reload de tu servidor de desarrollo actualiza todos los frames. El visor no procesa ni edita código.
 
