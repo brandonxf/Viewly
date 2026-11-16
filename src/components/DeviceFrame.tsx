@@ -52,6 +52,13 @@ export default function DeviceFrame({ device, url, scale, rotated, reloadKey, on
         />
       )}
       {/* El contenedor mide ancho*s × alto*s para no dejar huecos en el layout */}
+      <div className={`device ${device.group}${rotated ? ' landscape' : ''}`}>
+      {device.group === 'phone' && !rotated && (
+        <span
+          className="island"
+          style={{ width: 92 * scale, height: 24 * scale, top: 10 * scale, borderRadius: 12 * scale }}
+        />
+      )}
       <div ref={boxRef} className="frame-box" style={{ width: w * scale, height: h * scale }}>
         <iframe
           key={`${url}|${reloadKey}`}
@@ -60,6 +67,7 @@ export default function DeviceFrame({ device, url, scale, rotated, reloadKey, on
           title={device.name}
           style={{ width: w, height: h, transform: `scale(${scale})`, transformOrigin: 'top left' }}
         />
+      </div>
       </div>
       {hint && (
         <p className="capture-hint">

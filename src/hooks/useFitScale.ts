@@ -1,8 +1,8 @@
 import { useEffect, useState, type RefObject } from 'react'
 
-const PADDING = 16 // padding del contenedor .frames (por lado)
-const GAP = 20 // separación entre frames
-const CAPTION = 28 // alto aproximado del título de cada frame
+const PADDING = 36 // padding del contenedor .frames (por lado)
+const GAP = 52 // separación entre frames
+const CAPTION = 56 // título + separación + margen del marco
 
 /** Calcula el factor de escala para que todos los frames (ancho/alto reales) quepan en el área. */
 export function useFitScale(ref: RefObject<HTMLElement | null>, sizes: { w: number; h: number }[]) {
@@ -21,7 +21,7 @@ export function useFitScale(ref: RefObject<HTMLElement | null>, sizes: { w: numb
   if (!sizes.length || !area.w || !area.h) return 1
   const totalW = sizes.reduce((a, s) => a + s.w, 0)
   const maxH = Math.max(...sizes.map((s) => s.h))
-  const availW = area.w - PADDING * 2 - GAP * (sizes.length - 1)
+  const availW = area.w - 8 - PADDING * 2 - GAP * (sizes.length - 1)
   const availH = area.h - PADDING * 2 - CAPTION
   const s = Math.min(availW / totalW, availH / maxH, 1)
   return Math.max(s, 0.05)
