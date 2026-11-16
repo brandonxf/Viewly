@@ -50,3 +50,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
   background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 4px 14px;
 }
 .help-pop code { background: var(--bg); padding: 1px 4px; border-radius: 4px; }
+.check .x { padding: 0 6px; line-height: 1.2; }
+.add-device { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.add-device input { width: 100%; padding: 5px 8px; font-size: 13px; }
+.add-device .row { display: flex; gap: 6px; }

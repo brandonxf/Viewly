@@ -1,4 +1,4 @@
-export type DeviceGroup = 'phone' | 'tablet' | 'desktop'
+export type DeviceGroup = 'phone' | 'tablet' | 'desktop' | 'custom'
 
 export interface Device {
   id: string
@@ -22,4 +22,5 @@ export const GROUP_LABELS: Record<DeviceGroup, string> = {
   phone: 'Teléfonos',
   tablet: 'Tablets',
   desktop: 'Escritorio',
+  custom: 'Personalizados',
 }

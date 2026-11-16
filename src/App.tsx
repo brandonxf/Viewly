@@ -5,7 +5,7 @@ import { normalizeUrl } from './lib/url'
 import { useFitScale } from './hooks/useFitScale'
 import DevicePanel from './components/DevicePanel'
 import DeviceFrame from './components/DeviceFrame'
-import { DEVICES } from './devices'
+import { DEVICES, type Device } from './devices'
 
 function initialUrl(): string {
   const q = new URLSearchParams(window.location.search).get('url')
@@ -20,6 +20,7 @@ export default function App() {
     'rl:devices',
     DEVICES.filter((d) => d.enabledByDefault).map((d) => d.id),
   )
+  const [custom, setCustom] = useLocalStorage<Device[]>('rl:custom', [])
   const [rotated, setRotated] = useState<string[]>([])
   const [reloadKey, setReloadKey] = useState(0)
 
@@ -34,7 +35,16 @@ export default function App() {
 
   const rotate = (id: string) =>
     setRotated((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]))
-  const active = DEVICES.filter((d) => enabled.includes(d.id))
+  const addDevice = (name: string, width: number, height: number) => {
+    const id = `custom-${Date.now()}`
+    setCustom((cur) => [...cur, { id, name, width, height, group: 'custom', enabledByDefault: true }])
+    setEnabled((cur) => [...cur, id])
+  }
+  const removeDevice = (id: string) => {
+    setCustom((cur) => cur.filter((d) => d.id !== id))
+    setEnabled((cur) => cur.filter((x) => x !== id))
+  }
+  const active = [...DEVICES, ...custom].filter((d) => enabled.includes(d.id))
   const stageRef = useRef<HTMLElement>(null)
   const fit = useFitScale(
     stageRef,
@@ -53,7 +63,7 @@ export default function App() {
         onZoom={setZoom}
       />
       <div className="body">
-        <DevicePanel enabled={enabled} onToggle={toggle} />
+        <DevicePanel custom={custom} enabled={enabled} onToggle={toggle} onAdd={addDevice} onRemove={removeDevice} />
         <main className="stage" ref={stageRef}>
           {!url && <p className="empty">Escribe la URL de tu proyecto para empezar.</p>}
           {url && (
