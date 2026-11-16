@@ -2,6 +2,8 @@ import { useState } from 'react'
 import Toolbar, { type Zoom } from './components/Toolbar'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { normalizeUrl } from './lib/url'
+import DevicePanel from './components/DevicePanel'
+import { DEVICES } from './devices'
 
 function initialUrl(): string {
   const q = new URLSearchParams(window.location.search).get('url')
@@ -12,6 +14,10 @@ export default function App() {
   const [stored, setStored] = useLocalStorage<string>('rl:url', '')
   const [url, setUrlState] = useState(() => initialUrl() || stored)
   const [zoom, setZoom] = useLocalStorage<Zoom>('rl:zoom', 'fit')
+  const [enabled, setEnabled] = useLocalStorage<string[]>(
+    'rl:devices',
+    DEVICES.filter((d) => d.enabledByDefault).map((d) => d.id),
+  )
   const [reloadKey, setReloadKey] = useState(0)
 
   const setUrl = (raw: string) => {
@@ -19,6 +25,9 @@ export default function App() {
     setUrlState(n)
     setStored(n)
   }
+
+  const toggle = (id: string) =>
+    setEnabled((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]))
 
   return (
     <div className="app">
@@ -30,9 +39,12 @@ export default function App() {
         zoom={zoom}
         onZoom={setZoom}
       />
-      <main className="stage" data-reload={reloadKey}>
-        {!url && <p className="empty">Escribe la URL de tu proyecto para empezar.</p>}
-      </main>
+      <div className="body">
+        <DevicePanel enabled={enabled} onToggle={toggle} />
+        <main className="stage" data-reload={reloadKey}>
+          {!url && <p className="empty">Escribe la URL de tu proyecto para empezar.</p>}
+        </main>
+      </div>
     </div>
   )
 }

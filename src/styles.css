@@ -29,3 +29,12 @@ button:disabled { opacity: .5; cursor: default; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .stage { flex: 1; overflow: auto; min-height: 0; }
 .empty { color: var(--muted); text-align: center; margin-top: 20vh; }
+.body { flex: 1; display: flex; min-height: 0; }
+.device-panel {
+  width: 190px; padding: 12px 14px; background: var(--panel);
+  border-right: 1px solid var(--border); overflow: auto;
+}
+.device-panel h2 { font-size: 14px; margin: 0 0 8px; }
+.device-panel h3 { font-size: 11px; text-transform: uppercase; color: var(--muted); margin: 12px 0 4px; }
+.check { color: var(--text); padding: 3px 0; cursor: pointer; }
+.check small { color: var(--muted); margin-left: auto; }
