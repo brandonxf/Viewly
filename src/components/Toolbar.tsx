@@ -41,10 +41,10 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom }: Pr
         />
         <button type="submit" className="primary">Abrir</button>
       </form>
-      <button type="button" onClick={onReload} disabled={!url}>Recargar</button>
+      <button type="button" onClick={onReload} disabled={!url} title="Atajo: R">Recargar</button>
       <label className="zoom">
         Zoom
-        <select
+        <select title="Atajo F: Ajustar"
           value={String(zoom)}
           onChange={(e) => onZoom(e.target.value === 'fit' ? 'fit' : Number(e.target.value))}
         >

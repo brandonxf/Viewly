@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Toolbar, { type Zoom } from './components/Toolbar'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { normalizeUrl } from './lib/url'
@@ -60,6 +60,19 @@ export default function App() {
   if (freeOn) sizes.push({ w: freeW, h: 800 })
   const fit = useFitScale(stageRef, sizes)
   const scale = zoom === 'fit' ? fit : zoom
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return
+      const k = e.key.toLowerCase()
+      if (k === 'r') setReloadKey((n) => n + 1)
+      else if (k === 'f') setZoom('fit')
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [setZoom])
 
   return (
     <div className="app">
