@@ -28,12 +28,12 @@ Abre el visor en `http://localhost:5173` (o el puerto que indique Vite). Para co
 - **Captura (📷):** usa «compartir esta pestaña» del navegador y recorta el frame (funciona mejor en Chrome). Si no es posible, el visor muestra alternativas.
 - **Atajos:** `R` recarga, `F` ajusta el zoom (no actúan mientras escribes en un campo ni con el foco dentro de un iframe).
 
-### Sincronizar scroll (Fase 3, opcional)
+### Sincronizar scroll y rutas (Fase 3, opcional)
 
 1. Pega en tu proyecto: `<script src="http://localhost:5173/sync.js"></script>` (ajusta el puerto al del visor).
-2. Activa **Sincronizar scroll** en la barra. El scroll de un frame se reproduce, como proporción, en los demás.
+2. Activa **Sync** en la barra. El scroll de un frame se reproduce, como proporción, en los demás.
 
-Sin el script, el interruptor simplemente no hace nada. El script también envía la ruta actual al visor (aún no se usa para sincronizar la navegación).
+Sin el script, el interruptor simplemente no hace nada. El interruptor también sincroniza la **navegación**: si cambias de página en un frame (enlaces, `pushState`, hash), los demás van a la misma ruta (solo rutas del mismo origen). Los clics no se sincronizan.
 
 La última URL, el zoom y los dispositivos elegidos se guardan en `localStorage`.
 

@@ -67,7 +67,7 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom, sync
             </button>
           ))}
         </div>
-        <label className="switch" title="Requiere pegar public/sync.js en tu proyecto">
+        <label className="switch" title="Sincroniza scroll y navegación entre frames (requiere public/sync.js en tu proyecto)">
           <input type="checkbox" checked={syncScroll} onChange={(e) => onSyncScroll(e.target.checked)} />
           <span className="track" />
           Sync

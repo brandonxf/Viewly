@@ -86,11 +86,15 @@ export default function App() {
     if (!syncScroll) return
     const onMessage = (e: MessageEvent) => {
       const m = e.data
-      if (!m || m.type !== 'viewly:scroll') return
+      if (!m || (m.type !== 'viewly:scroll' && m.type !== 'viewly:route')) return
+      const msg =
+        m.type === 'viewly:scroll'
+          ? { type: 'viewly:apply-scroll', x: m.x, y: m.y }
+          : { type: 'viewly:navigate', path: m.path }
       for (const el of frames.current.values()) {
         // Solo reenviar a los demás frames; el emisor se identifica con event.source.
         if (el.contentWindow && el.contentWindow !== e.source) {
-          el.contentWindow.postMessage({ type: 'viewly:apply-scroll', x: m.x, y: m.y }, '*')
+          el.contentWindow.postMessage(msg, '*')
         }
       }
     }
