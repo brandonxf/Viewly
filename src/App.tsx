@@ -3,6 +3,7 @@ import Toolbar, { type Zoom } from './components/Toolbar'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { normalizeUrl } from './lib/url'
 import DevicePanel from './components/DevicePanel'
+import DeviceFrame from './components/DeviceFrame'
 import { DEVICES } from './devices'
 
 function initialUrl(): string {
@@ -18,6 +19,7 @@ export default function App() {
     'rl:devices',
     DEVICES.filter((d) => d.enabledByDefault).map((d) => d.id),
   )
+  const [rotated, setRotated] = useState<string[]>([])
   const [reloadKey, setReloadKey] = useState(0)
 
   const setUrl = (raw: string) => {
@@ -28,6 +30,11 @@ export default function App() {
 
   const toggle = (id: string) =>
     setEnabled((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]))
+
+  const rotate = (id: string) =>
+    setRotated((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]))
+  const active = DEVICES.filter((d) => enabled.includes(d.id))
+  const scale = zoom === 'fit' ? 1 : zoom
 
   return (
     <div className="app">
@@ -41,8 +48,23 @@ export default function App() {
       />
       <div className="body">
         <DevicePanel enabled={enabled} onToggle={toggle} />
-        <main className="stage" data-reload={reloadKey}>
+        <main className="stage">
           {!url && <p className="empty">Escribe la URL de tu proyecto para empezar.</p>}
+          {url && (
+            <div className="frames">
+              {active.map((d) => (
+                <DeviceFrame
+                  key={d.id}
+                  device={d}
+                  url={url}
+                  scale={scale}
+                  rotated={rotated.includes(d.id)}
+                  reloadKey={reloadKey}
+                  onRotate={() => rotate(d.id)}
+                />
+              ))}
+            </div>
+          )}
         </main>
       </div>
     </div>

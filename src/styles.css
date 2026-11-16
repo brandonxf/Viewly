@@ -38,3 +38,9 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .device-panel h3 { font-size: 11px; text-transform: uppercase; color: var(--muted); margin: 12px 0 4px; }
 .check { color: var(--text); padding: 3px 0; cursor: pointer; }
 .check small { color: var(--muted); margin-left: auto; }
+.frame { margin: 0; display: flex; flex-direction: column; gap: 6px; flex: none; }
+.frame figcaption { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.frame figcaption button { padding: 2px 8px; }
+.frame-box { background: #fff; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.frame-box iframe { border: 0; display: block; background: #fff; }
+.frames { display: flex; gap: 20px; align-items: flex-start; padding: 16px; width: max-content; }
