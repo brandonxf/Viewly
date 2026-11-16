@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Toolbar, { type Zoom } from './components/Toolbar'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { normalizeUrl } from './lib/url'
+import { useDevPorts } from './hooks/useDevPorts'
 import { useFitScale } from './hooks/useFitScale'
 import DevicePanel from './components/DevicePanel'
 import DeviceFrame from './components/DeviceFrame'
@@ -30,6 +31,7 @@ export default function App() {
     else frames.current.delete(id)
   }
   const [rotated, setRotated] = useState<string[]>([])
+  const ports = useDevPorts()
   const [reloadKey, setReloadKey] = useState(0)
 
   const setUrl = (raw: string) => {
@@ -111,7 +113,21 @@ export default function App() {
       <div className="body">
         <DevicePanel custom={custom} enabled={enabled} onToggle={toggle} onAdd={addDevice} onRemove={removeDevice} freeOn={freeOn} onFreeToggle={() => setFreeOn((v) => !v)} />
         <main className="stage" ref={stageRef}>
-          {!url && <p className="empty">Escribe la URL de tu proyecto para empezar.</p>}
+          {!url && (
+            <div className="empty">
+              <p>Escribe la URL de tu proyecto para empezar.</p>
+              {ports.length > 0 && (
+                <p>
+                  Servidores detectados:{' '}
+                  {ports.map((p) => (
+                    <button key={p} type="button" className="chip" onClick={() => setUrl(String(p))}>
+                      localhost:{p}
+                    </button>
+                  ))}
+                </p>
+              )}
+            </div>
+          )}
           {url && (
             <div className="frames">
               {active.map((d) => (
