@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import HelpPanel from './HelpPanel'
 
 export type Zoom = 'fit' | number
 
@@ -52,6 +53,7 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom }: Pr
           ))}
         </select>
       </label>
+      <HelpPanel />
     </header>
   )
 }
