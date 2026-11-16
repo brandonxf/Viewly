@@ -115,7 +115,8 @@ export default function App() {
         <main className="stage" ref={stageRef}>
           {!url && (
             <div className="empty">
-              <p>Escribe la URL de tu proyecto para empezar.</p>
+              <h1>Ve tu proyecto en todos los dispositivos</h1>
+              <p>Escribe la URL de tu servidor de desarrollo para empezar.</p>
               {ports.length > 0 && (
                 <p>
                   Servidores detectados:{' '}

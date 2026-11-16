@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from './Icon'
 import { DEVICES, GROUP_LABELS, type Device, type DeviceGroup } from '../devices'
 
 interface Props {
@@ -38,14 +39,14 @@ export default function DevicePanel({ custom, enabled, onToggle, onAdd, onRemove
         if (!list.length) return null
         return (
           <section key={g}>
-            <h3>{GROUP_LABELS[g]}</h3>
+            <h3><Icon name={g} size={13} /> {GROUP_LABELS[g]}</h3>
             {list.map((d) => (
               <label key={d.id} className="check">
                 <input type="checkbox" checked={enabled.includes(d.id)} onChange={() => onToggle(d.id)} />
                 <span>{d.name}</span>
                 <small>{d.width}×{d.height}</small>
                 {d.group === 'custom' && (
-                  <button type="button" className="x" title="Quitar" onClick={(e) => { e.preventDefault(); onRemove(d.id) }}>×</button>
+                  <button type="button" className="x" title="Quitar" onClick={(e) => { e.preventDefault(); onRemove(d.id) }}><Icon name="close" size={12} /></button>
                 )}
               </label>
             ))}

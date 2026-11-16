@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import QrDialog from './QrDialog'
+import Icon from './Icon'
 import HelpPanel from './HelpPanel'
 
 export type Zoom = 'fit' | number
@@ -28,6 +29,10 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom, sync
 
   return (
     <header className="toolbar">
+      <div className="brand">
+        <span className="logo" aria-hidden="true" />
+        Viewly
+      </div>
       <form
         className="url-form"
         onSubmit={(e) => {
@@ -35,9 +40,10 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom, sync
           onSubmitUrl(draft)
         }}
       >
-        <label htmlFor="url">URL</label>
+        <Icon name="globe" />
         <input
           id="url"
+          aria-label="URL del proyecto"
           value={draft}
           placeholder="localhost:5173 o 5173"
           spellCheck={false}
@@ -45,25 +51,33 @@ export default function Toolbar({ url, onSubmitUrl, onReload, zoom, onZoom, sync
         />
         <button type="submit" className="primary">Abrir</button>
       </form>
-      <button type="button" onClick={onReload} disabled={!url} title="Atajo: R">Recargar</button>
-      <label className="zoom">
-        Zoom
-        <select title="Atajo F: Ajustar"
-          value={String(zoom)}
-          onChange={(e) => onZoom(e.target.value === 'fit' ? 'fit' : Number(e.target.value))}
-        >
+      <div className="actions">
+        <button type="button" className="icon-btn" onClick={onReload} disabled={!url} title="Recargar (R)">
+          <Icon name="reload" />
+        </button>
+        <div className="segmented" role="group" aria-label="Zoom" title="Atajo F: Ajustar">
           {ZOOM_OPTIONS.map((o) => (
-            <option key={String(o.value)} value={String(o.value)}>{o.label}</option>
+            <button
+              key={String(o.value)}
+              type="button"
+              className={o.value === zoom ? 'on' : ''}
+              onClick={() => onZoom(o.value)}
+            >
+              {o.label}
+            </button>
           ))}
-        </select>
-      </label>
-      <label className="zoom" title="Requiere pegar public/sync.js en tu proyecto">
-        <input type="checkbox" checked={syncScroll} onChange={(e) => onSyncScroll(e.target.checked)} />
-        Sincronizar scroll
-      </label>
-      <button type="button" onClick={() => setQr(true)} disabled={!url}>QR</button>
+        </div>
+        <label className="switch" title="Requiere pegar public/sync.js en tu proyecto">
+          <input type="checkbox" checked={syncScroll} onChange={(e) => onSyncScroll(e.target.checked)} />
+          <span className="track" />
+          Sync
+        </label>
+        <button type="button" className="icon-btn" onClick={() => setQr(true)} disabled={!url} title="Abrir en un teléfono (QR)">
+          <Icon name="qr" />
+        </button>
+        <HelpPanel />
+      </div>
       {qr && <QrDialog url={url} onClose={() => setQr(false)} />}
-      <HelpPanel />
     </header>
   )
 }

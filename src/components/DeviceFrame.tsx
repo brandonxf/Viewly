@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import type { Device } from '../devices'
+import Icon from './Icon'
 import { captureElement } from '../lib/capture'
 
 interface Props {
@@ -24,18 +25,19 @@ export default function DeviceFrame({ device, url, scale, rotated, reloadKey, on
   return (
     <figure className="frame">
       <figcaption>
-        <span>{device.name} · {w}×{h}</span>
+        <span className="name">{device.name} <em>{w}×{h}</em></span>
         <button
           type="button"
+          className="icon-btn sm"
           title="Captura de pantalla"
           onClick={() => {
             if (!boxRef.current) return
             captureElement(boxRef.current, `viewly-${device.id}-${w}x${h}.png`).catch(() => setHint(true))
           }}
         >
-          📷
+          <Icon name="camera" size={14} />
         </button>
-        {onRotate && <button type="button" onClick={onRotate} title="Rotar">⟳</button>}
+        {onRotate && <button type="button" className="icon-btn sm" onClick={onRotate} title="Rotar"><Icon name="rotate" size={14} /></button>}
       </figcaption>
       {slider && (
         <input
