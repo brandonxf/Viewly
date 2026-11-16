@@ -21,6 +21,8 @@ export default function App() {
     DEVICES.filter((d) => d.enabledByDefault).map((d) => d.id),
   )
   const [custom, setCustom] = useLocalStorage<Device[]>('rl:custom', [])
+  const [freeOn, setFreeOn] = useLocalStorage<boolean>('rl:free', false)
+  const [freeW, setFreeW] = useLocalStorage<number>('rl:freeW', 600)
   const [rotated, setRotated] = useState<string[]>([])
   const [reloadKey, setReloadKey] = useState(0)
 
@@ -46,10 +48,17 @@ export default function App() {
   }
   const active = [...DEVICES, ...custom].filter((d) => enabled.includes(d.id))
   const stageRef = useRef<HTMLElement>(null)
-  const fit = useFitScale(
-    stageRef,
-    active.map((d) => (rotated.includes(d.id) ? { w: d.height, h: d.width } : { w: d.width, h: d.height })),
-  )
+  const freeDevice: Device = {
+    id: 'free',
+    name: 'Ancho libre',
+    width: freeW,
+    height: 800,
+    group: 'custom',
+    enabledByDefault: false,
+  }
+  const sizes = active.map((d) => (rotated.includes(d.id) ? { w: d.height, h: d.width } : { w: d.width, h: d.height }))
+  if (freeOn) sizes.push({ w: freeW, h: 800 })
+  const fit = useFitScale(stageRef, sizes)
   const scale = zoom === 'fit' ? fit : zoom
 
   return (
@@ -63,7 +72,7 @@ export default function App() {
         onZoom={setZoom}
       />
       <div className="body">
-        <DevicePanel custom={custom} enabled={enabled} onToggle={toggle} onAdd={addDevice} onRemove={removeDevice} />
+        <DevicePanel custom={custom} enabled={enabled} onToggle={toggle} onAdd={addDevice} onRemove={removeDevice} freeOn={freeOn} onFreeToggle={() => setFreeOn((v) => !v)} />
         <main className="stage" ref={stageRef}>
           {!url && <p className="empty">Escribe la URL de tu proyecto para empezar.</p>}
           {url && (
@@ -79,6 +88,16 @@ export default function App() {
                   onRotate={() => rotate(d.id)}
                 />
               ))}
+              {freeOn && (
+                <DeviceFrame
+                  device={freeDevice}
+                  url={url}
+                  scale={scale}
+                  rotated={false}
+                  reloadKey={reloadKey}
+                  slider={{ value: freeW, onChange: setFreeW }}
+                />
+              )}
             </div>
           )}
         </main>

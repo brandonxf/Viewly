@@ -7,11 +7,13 @@ interface Props {
   onToggle: (id: string) => void
   onAdd: (name: string, width: number, height: number) => void
   onRemove: (id: string) => void
+  freeOn: boolean
+  onFreeToggle: () => void
 }
 
 const GROUPS: DeviceGroup[] = ['phone', 'tablet', 'desktop', 'custom']
 
-export default function DevicePanel({ custom, enabled, onToggle, onAdd, onRemove }: Props) {
+export default function DevicePanel({ custom, enabled, onToggle, onAdd, onRemove, freeOn, onFreeToggle }: Props) {
   const [name, setName] = useState('')
   const [w, setW] = useState('')
   const [h, setH] = useState('')
@@ -50,6 +52,13 @@ export default function DevicePanel({ custom, enabled, onToggle, onAdd, onRemove
           </section>
         )
       })}
+      <section>
+        <h3>Ancho libre</h3>
+        <label className="check">
+          <input type="checkbox" checked={freeOn} onChange={onFreeToggle} />
+          <span>Frame con slider</span>
+        </label>
+      </section>
       <form className="add-device" onSubmit={submit}>
         <h3>Añadir dispositivo</h3>
         <input placeholder="Nombre" value={name} onChange={(e) => setName(e.target.value)} />
