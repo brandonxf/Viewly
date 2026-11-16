@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo responsive</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh;
+         background: #ffe3e3; color: #222; text-align: center; }
+  h1 { font-size: 3rem; margin: 0; }
+  .layout::after { content: "Móvil (< 600px)"; font-size: 1.5rem; }
+  @media (min-width: 600px)  { body { background: #e3f2ff; } .layout::after { content: "Tablet (600–1023px)"; } }
+  @media (min-width: 1024px) { body { background: #e3ffe9; } .layout::after { content: "Escritorio (≥ 1024px)"; } }
+</style>
+</head>
+<body>
+  <main>
+    <h1><span id="w"></span> px</h1>
+    <p class="layout"></p>
+  </main>
+  <script>
+    const w = document.getElementById('w');
+    const u = () => (w.textContent = innerWidth);
+    u(); addEventListener('resize', u);
+  </script>
+</body>
+</html>
