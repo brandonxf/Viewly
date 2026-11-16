@@ -21,6 +21,13 @@ Abre el visor en `http://localhost:5173` (o el puerto que indique Vite). Para co
 4. **Zoom**: *Ajustar* hace que todos los frames activos quepan en pantalla; también hay 25%, 50%, 75% y 100%.
 5. **Recargar** remonta los iframes. Cambiar zoom, rotar o activar dispositivos no recarga los demás.
 
+### Funciones de la Fase 2
+
+- **Ancho libre:** activa «Frame con slider» en el panel para arrastrar el ancho (280–1920 px) y ver en qué punto se rompe el diseño.
+- **Dispositivos personalizados:** añádelos con nombre, ancho y alto; se guardan en `localStorage` y se pueden quitar con ×.
+- **Captura (📷):** usa «compartir esta pestaña» del navegador y recorta el frame (funciona mejor en Chrome). Si no es posible, el visor muestra alternativas.
+- **Atajos:** `R` recarga, `F` ajusta el zoom (no actúan mientras escribes en un campo ni con el foco dentro de un iframe).
+
 La última URL, el zoom y los dispositivos elegidos se guardan en `localStorage`.
 
 Para probar: `npx serve examples/demo` y pega la URL que muestre.
